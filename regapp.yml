@@ -1,0 +1,23 @@
+---
+- name: Automate Docker image and container creation
+  hosts: localhost  # Run on the Ansible Server
+  become: yes       # Run tasks with sudo privileges
+  vars:
+    ansible_python_interpreter: /usr/bin/python2  # Specify the Python 2 interpreter
+  tasks:
+    - name: Build Docker image
+      docker_image:
+        name: regapp
+        tag: v1
+        source: build
+        build:
+          path: .   # Path to the directory containing the Dockerfile
+          pull: yes # Pull the latest base image if available
+
+    - name: Run Docker container
+      docker_container:
+        name: my-regapp
+        image: regapp:v1
+        state: started
+        ports:
+          - "8080:8080"  # Map host port 8080 to container port 8080
