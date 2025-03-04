@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Build Docker Image
+      docker_image:
+        name: your-app-image:latest
+        build:
+          path: /home/ansibleusr # Path to your application code on Ansible server
+        source: build
+        state: present

@@ -1,0 +1,15 @@
+---
+- hosts: docker_hosts
+  become: true
+  tasks:
+    - name: Stop and remove existing container (if any)
+      docker_container:
+        name: your-app-container
+        state: absent
+    - name: Run Docker Container
+      docker_container:
+        name: your-app-container
+        image: your-app-image:latest
+        ports:
+          - "8080:8080" # Replace with your application's port
+        state: started
