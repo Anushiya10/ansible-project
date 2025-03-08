@@ -1,5 +1,13 @@
-FROM tomcat:latest
-COPY ./webapp.war /usr/local/tomcat/webapps/
+RUN mkdir /opt/tomcat/
+WORKDIR /opt/tomcat
+RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.102/bin/apache-tomcat-9.0.102.tar.gz
+RUN tar -xvzf apache-tomcat-9.0.102.tar.gz
+RUN mv apache-tomcat-9.0.102/* /opt/tomcat
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum -y install java
+CMD /bin/bash
 EXPOSE 8080
-CMD ["catalina.sh", "run"]s
-
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+~                                                
